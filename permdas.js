@@ -56,4 +56,3 @@ const permdas = expression => (
     permdasHelper(expression.replace(/ /g, ''))
 )
 
-console.log(permdas('1 + 12 / (5 - 2 ^ (3 / 2))'))
