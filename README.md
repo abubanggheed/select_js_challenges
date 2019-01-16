@@ -1,1 +1,2 @@
 # select_js_challenges
+This repository is a selection of code challenges that I either though of or thought of neat solutions to. The purpose is to relax, and simply work through some nice, logical problems.
