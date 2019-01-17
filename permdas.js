@@ -59,5 +59,8 @@ const permdasHelper = expression => {
 }
 
 const permdas = expression => (
-    permdasHelper(formatExpression(expression))
+    permdasHelper(formatExpression(expression
+        .replace(/ /g, '')
+        .replace(/--/g, '+'))
+    )
 )
