@@ -24,11 +24,11 @@ const findClossingP = (expression, startingIndex) => {
 const permdasHelper = expression => {
     let clossingP = 0;
     let openingP = expression.lastIndexOf('(');
-    let lastPlus = expression.lastIndexOf('+');
-    let lastMinus = expression.lastIndexOf('-');
-    let lastTimes = expression.lastIndexOf('*');
-    let lastDiv = expression.lastIndexOf('/');
-    let lastExp = expression.lastIndexOf('^');
+    let lastPlus = (openingP === -1) ? expression.lastIndexOf('+'): 1;
+    let lastMinus = (openingP === -1) ? expression.lastIndexOf('-'): 1;
+    let lastTimes = (lastPlus + lastMinus === -2) ? expression.lastIndexOf('*'): 1;
+    let lastDiv = (lastPlus + lastMinus === -2) ? expression.lastIndexOf('/'): 1;
+    let lastExp = (lastDiv + lastTimes === -2) ? expression.lastIndexOf('^'): 1;
     if (openingP > -1) {
         clossingP = findClossingP(expression, openingP)
         return permdasHelper(expression.slice(0, openingP)
@@ -55,4 +55,3 @@ const permdasHelper = expression => {
 const permdas = expression => (
     permdasHelper(expression.replace(/ /g, ''))
 )
-
