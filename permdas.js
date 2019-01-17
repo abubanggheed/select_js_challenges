@@ -9,12 +9,12 @@ const formatExpression = expression => (
     expression.split('').map((char, index) => (
         char === '-' ? (
             (index === 0 || '+-*/^('.indexOf(expression[index - 1]) > -1) ?
-                '-' : '+-'
+                '-' : '+-1*'
         ) : char === '(' ? (
-            (index > 0 && '+-*/^'.indexOf(expression[index - 1]) === -1) ?
+            (index > 0 && '+-*/^('.indexOf(expression[index - 1]) === -1) ?
                 '*(' : '('
         ) : char === ')' ? (
-            (index < expression.length - 1 && '+-*/^'.indexOf(expression[index + 1]) === -1) ?
+            (index < expression.length - 1 && '+-*/^()'.indexOf(expression[index + 1]) === -1) ?
                 ')*' : ')'
         ) : char
     )
@@ -67,6 +67,6 @@ const permdasHelper = expression => {
 const permdas = expression => (
     permdasHelper(formatExpression(expression
         .replace(/ /g, '')
-        .replace(/--/g, '+'))
+    )
     )
 )
