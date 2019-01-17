@@ -16,8 +16,7 @@ const formatExpression = expression => (
         ) : char === ')' ? (
             (index < expression.length - 1 && '+-*/^()'.indexOf(expression[index + 1]) === -1) ?
                 ')*' : ')'
-        ) : char
-    )
+        ) : char)
     ).join('')
 )
 
@@ -34,7 +33,7 @@ const findClossingP = (expression, startingIndex) => {
             i++
         }
     }
-    return i < expression.length ? i : false
+    return i
 }
 
 const permdasHelper = expression => {
