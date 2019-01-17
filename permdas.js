@@ -10,6 +10,12 @@ const formatExpression = expression => (
         char === '-' ? (
             (index === 0 || '+-*/^('.indexOf(expression[index - 1]) > -1) ?
                 '-' : '+-'
+        ) : char === '(' ? (
+            (index > 0 && '+-*/^'.indexOf(expression[index - 1]) === -1) ?
+                '*(' : '('
+        ) : char === ')' ? (
+            (index < expression.length - 1 && '+-*/^'.indexOf(expression[index + 1]) === -1) ?
+                ')*' : ')'
         ) : char
     )
     ).join('')
