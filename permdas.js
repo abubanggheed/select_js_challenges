@@ -11,11 +11,11 @@ const formatExpression = expression => (
             (index === 0 || '+-*/^('.includes(expression[index - 1])) ?
                 '-' : '+-1*'
         ) : char === '(' ? (
-            (index > 0 && !'+-*/^('.includes(expression[index - 1])) ?
-                '*(' : '('
+            (index === 0 || '+-*/^('.includes(expression[index - 1])) ?
+                '(' : '*('
         ) : char === ')' ? (
-            (index < expression.length - 1 && !'+-*/^()'.includes(expression[index + 1])) ?
-                ')*' : ')'
+            (index === expression.length - 1 || '+-*/^()'.includes(expression[index + 1])) ?
+                ')' : ')*'
         ) : char)
     ).join('')
 )
