@@ -8,8 +8,9 @@ class IpInstance {
 }
 
 class IpBucketlist {
-  constructor(address, maxLength, timespan, parent=null, length=0, leftChild=null, rightChild=null, root=null, tail=null) {
+  constructor(address, date, maxLength, timespan, parent=null, length=0, leftChild=null, rightChild=null, root=null, tail=null) {
     this.address = address;
+    this.date = date;
     this.maxLength = maxLength;
     this.timespan = timespan;
     this.parent = parent;
