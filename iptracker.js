@@ -74,7 +74,7 @@ class IpTracker {
   }
 
   greaterThanIp(ip1, ip2, index) {
-    (ip1[index] === ip2[index] && ip1[index] !== null) ?
+    return (ip1[index] === ip2[index] && ip1[index] !== null) ?
       greaterThanIp(ip1, ip2, index + 1)
       : ip1[index] > ip2[index];
   }
