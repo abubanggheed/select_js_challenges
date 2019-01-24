@@ -1,3 +1,12 @@
+/*
+This file provides a framework for an anti ddos defense system. The basic structure is
+each ip address has a bucket in a tree that tracks and manages instances of requests.
+Then if, that bucket is of a certain size, a value is returned to indicate that they
+should be blocked. The buckets are storred on a splay tree so that active users will
+cluster toward the top of the tree, and so will be easier to lookup. The tree will cutof
+at a certain depth.
+*/
+
 class IpInstance {
   constructor(timestamp, prev = null, next = null) {
     this.address = address;
@@ -31,7 +40,7 @@ class IpBucketlist {
       } else {
         this.tail = null;
       }
-      return removeOldRoot(timeThreshold);
+      return this.removeOldRoot(timeThreshold);
     } else {
       return this.length
     }
@@ -67,16 +76,39 @@ class IpTracker {
 
   process(ipAddress) {
     let ipArray = ipAddress.split('.').map(strnum => Number(strnum));
+    let diagnosis = this.lookup(ipArray);
   }
 
-  lookup(ipArray) {
-
+  lookup(ipArray, previous, current, depth = 0) {
+    if (current) {
+      switch (this.greaterThanIp(ipArray, current.address)) {
+        case '=':
+          return { evaluation: current.appendToTail(), depth: depth, bucket: current }
+        //this will result in true or null, true means the number or requests exceeded the max
+        case true:
+          return lookup(ipArray, current, current.rightChild, depth + 1);
+        case false:
+          return lookup(ipArray, current, current.leftChild, depth + 1);
+        default:
+          break;
+      }
+    } else {
+      let newBucket = new IpBucketlist(ipArray, new Date().getDay(), this.maxRequests, this.timespan, previous)
+      if (previous) {
+        if (this.greaterThanIp(newBucket.address, previous.address)) {
+          previous.rightChild = newBucket;
+        } else {
+          previous.leftChild = newBucket;
+        }
+      }
+      return { evaluation: newBucket.appendToTail(), depth: depth, bucket: newBucket }
+    }
   }
 
   greaterThanIp(ip1, ip2, index) {
     return (ip1[index] !== null) ?
-        (ip1[index] === ip2[index]) ?
-        greaterThanIp(ip1, ip2, index + 1)
+      (ip1[index] === ip2[index]) ?
+        this.greaterThanIp(ip1, ip2, index + 1)
         : ip1[index] > ip2[index]
       : '=';
   }
