@@ -25,7 +25,7 @@ class IpBucketlist {
     let instance = this.root;
     if (this.root && instance.timestamp < time) {
       this.root = this.root.next;
-      this.length --;
+      this.length--;
       if (this.root !== null) {
         this.root.prev = null
       } else {
@@ -57,10 +57,25 @@ class IpBucketlist {
 }
 
 class IpTracker {
-  constructor(maxDepth, maxRequests, timespan, root = null) {
+  constructor(maxDepth, maxRequests, maxBucketLength, timespan, root = null) {
     this.maxDepth = maxDepth;
     this.root = root;
     this.maxRequests = maxRequests;
+    this.maxBucketLength = maxBucketLength;
     this.timespan = timespan;
+  }
+
+  process(ipAddress) {
+    let ipArray = ipAddress.split('.').map(snum => Number(snum));
+  }
+
+  lookup(ipArray) {
+
+  }
+
+  greaterThanIp(ip1, ip2, index) {
+    (ip1[index] === ip2[index] && ip1[index] !== null) ?
+      greaterThanIp(ip1, ip2, index + 1)
+      : ip1[index] > ip2[index];
   }
 }
