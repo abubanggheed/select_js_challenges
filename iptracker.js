@@ -40,6 +40,7 @@ class IpBucketlist {
   appendToTail() {
     let currentTime = Date.now();
     let instance = new IpInstance(currentTime);
+    this.length++;
     if (this.tail) {
       this.tail.next = instance;
       instance.prev = this.tail;
