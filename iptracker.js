@@ -43,7 +43,7 @@ class IpBucketlist {
     if (this.tail) {
       this.tail.next = instance;
       instance.prev = this.tail;
-      let timeThreshold = currentTime - timespan;
+      let timeThreshold = currentTime - this.timespan;
       this.tail = instance;
       if (this.removeOldRoot(timeThreshold) > this.maxLength) {
         return true;
