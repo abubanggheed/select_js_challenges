@@ -74,9 +74,41 @@ class IpTracker {
     this.timespan = timespan;
   }
 
+  rightRotationAt(node) {
+    let toPromote = node.leftChild;
+    let newLeft = toPromote.rightChild;
+    if (node.parent) {
+      if (node.parent.leftChild === node) {
+        node.parent.leftChild = toPromote
+      } else {
+        node.parent.rightChild = toPromote
+      }
+    } else {
+      self.root = toPromote;
+    }
+    node.leftChild = newLeft;
+    toPromote.rightChild = node;
+  }
+
+  leftRotationAt(node) {
+    let toPromote = node.rightChild;
+    let newRight = toPromote.rightChild;
+    if (node.parent) {
+      if (node.parent.rightChild === node) {
+        node.parent.rightChild = toPromote
+      } else {
+        node.parent.leftChild = toPromote
+      }
+    } else {
+      self.root = toPromote;
+    }
+    node.rightChild = newRight;
+    toPromote.leftChild = node;
+  }
+
   process(ipAddress) {
     let ipArray = ipAddress.split('.').map(strnum => Number(strnum));
-    let diagnosis = this.lookup(ipArray);
+    let diagnosis = this.lookup(ipArray, null, this.root);
   }
 
   lookup(ipArray, previous, current, depth = 0) {
