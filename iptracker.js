@@ -55,12 +55,11 @@ class IpBucketlist {
       instance.prev = this.tail;
       let timeThreshold = currentTime - this.timespan;
       this.tail = instance;
-      if (this.removeOldRoot(timeThreshold) > this.maxLength) {
-        return true;
-      }
+      return this.removeOldRoot(timeThreshold) > this.maxLength;
     } else {
       this.tail = instance;
       this.root = instance;
+      return false;
     }
   }
 }
@@ -107,7 +106,7 @@ class IpTracker {
   }
 
   promote(node) {
-    while(node !== this.root) {
+    while (node !== this.root) {
       let p = node.parent;
       if (p) {
         let gp = node.parent.parent;
@@ -120,7 +119,7 @@ class IpTracker {
             this.rightRotationAt(gp);
           }
         } else {
-          if(p.leftChild === node) {
+          if (p.leftChild === node) {
             this.rightRotationAt(p);
             this.leftRotationAt(gp);
           } else {
@@ -141,6 +140,25 @@ class IpTracker {
   process(ipAddress) {
     let ipArray = ipAddress.split('.').map(strnum => Number(strnum));
     let diagnosis = this.lookup(ipArray, null, this.root);
+    if (diagnosis.depth >= this.maxDepth - 1) {
+      diagnosis.bucket.leftChild = null;
+      diagnosis.bucket.rightChild = null;
+    }
+    this.promote(diagnosis.bucket)
+    if (diagnosis.evaluation) {
+      let today = new Date();
+      let created = diagnosis.bucket.date;
+      if (today.getDay !== created.getDay || today.getMonth !== created.getMonth || today.getFullYear !== created.getFullYear) {
+        diagnosis.bucket.length = 0;
+        diagnosis.bucket.root = 0;
+        diagnosis.bucket.tail = 0;
+        return true;
+      } else {
+        return false
+      }
+    } else {
+      return true;
+    }
   }
 
   lookup(ipArray, previous, current, depth = 0) {
@@ -148,7 +166,7 @@ class IpTracker {
       switch (this.greaterThanIp(ipArray, current.address)) {
         case '=':
           return { evaluation: current.appendToTail(), depth: depth, bucket: current }
-        //this will result in true or null, true means the number or requests exceeded the max
+        //evaluation will result in true or false, true means the number or requests exceeded the max
         case true:
           return lookup(ipArray, current, current.rightChild, depth + 1);
         case false:
@@ -157,7 +175,7 @@ class IpTracker {
           break;
       }
     } else {
-      let newBucket = new IpBucketlist(ipArray, new Date().getDay(), this.maxRequests, this.timespan, previous)
+      let newBucket = new IpBucketlist(ipArray, new Date(), this.maxRequests, this.timespan, previous)
       if (previous) {
         if (this.greaterThanIp(newBucket.address, previous.address)) {
           previous.rightChild = newBucket;
