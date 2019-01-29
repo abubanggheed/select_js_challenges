@@ -84,7 +84,7 @@ class IpTracker {
         node.parent.rightChild = toPromote
       }
     } else {
-      self.root = toPromote;
+      this.root = toPromote;
     }
     node.leftChild = newLeft;
     toPromote.rightChild = node;
@@ -100,10 +100,42 @@ class IpTracker {
         node.parent.leftChild = toPromote
       }
     } else {
-      self.root = toPromote;
+      this.root = toPromote;
     }
     node.rightChild = newRight;
     toPromote.leftChild = node;
+  }
+
+  promote(node) {
+    while(node !== this.root) {
+      let p = node.parent;
+      if (p) {
+        let gp = node.parent.parent;
+        if (gp.leftChild === p) {
+          if (p.leftChild === node) {
+            this.rightRotationAt(gp);
+            this.rightRotationAt(p);
+          } else {
+            this.leftRotationAt(p);
+            this.rightRotationAt(gp);
+          }
+        } else {
+          if(p.leftChild === node) {
+            this.rightRotationAt(p);
+            this.leftRotationAt(gp);
+          } else {
+            this.leftRotationAt(gp);
+            this.leftRotationAt(p);
+          }
+        }
+      } else {
+        if (p.leftChild === node) {
+          this.rightRotationAt(p);
+        } else {
+          this.leftRotationAt(p);
+        }
+      }
+    }
   }
 
   process(ipAddress) {
