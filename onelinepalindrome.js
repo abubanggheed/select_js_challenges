@@ -5,8 +5,10 @@ const isPalindrome = string => (
 
 // now without using array methods
 
-const isPalindrome2 = (string, i=0) => (
-    (i >= string.length - 1 - i) ? true : (string[i] === string[string.length - 1 - i]
-        && isPalindrome2(string, i + 1))
+const isPalindrome2 = (string, i = 0) => (
+    (i >= string.length - 1 - i) ? true : (
+        string[i] === string[string.length - 1 - i]
+        && isPalindrome2(string, i + 1)
+    )
 )
 
