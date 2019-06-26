@@ -6,12 +6,10 @@ If there are no numbers to multiply, it returns 0.
 */
 function productInArray(arrayIn, startIndex = 0) {
   let a = arrayIn[startIndex] || 0
-  let i = startIndex + 1
   let product = 0
-  while(a === a) {
+  for(let i = startIndex + 1; a === a; i++) {
     product = a
     a = a * arrayIn[i]
-    i++
   }
   return product
 }
