@@ -17,5 +17,3 @@ const fibonacciTotal = num => (
     fibTotalCache[`${num}`]
   )
 )
-
-console.log(fibonacciTotal(40))
