@@ -11,5 +11,5 @@ function productInArray(arrayIn, startIndex = 0) {
     product = a, a = a * arrayIn[i], a === a;
     i++
   ) { }
-    return product
+  return product
 }
