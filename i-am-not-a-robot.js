@@ -1,14 +1,12 @@
-let human = false
-
 const iAmNotARobot = (btn, cb) => {
+  let human = false
   btn.onclick(() => {
     new Promise(resolve => (
       human = true, resolve()
     ))
   })
-  btn.onclick(() => {
-    human ?
-      cb('human')
-      : cb('robot')
+  btn.onclick(event => {
+    cb(event, human)
+    human = false
   })
 }
